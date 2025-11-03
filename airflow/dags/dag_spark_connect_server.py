@@ -6,14 +6,15 @@ from airflow.models import DAG
 from pyspark.sql import SparkSession
 from datetime import datetime, date, timedelta
 from pyspark.sql import Row
-from airflow.utils.dates import days_ago
 import os
 import time
 from pprint import pprint
 
+seven_days_ago = datetime.combine(datetime.today() - timedelta(7), datetime.min.time())
+
 args = {
     "owner": "airflow",
-    "start_date": days_ago(1),
+    "start_date": seven_days_ago,
 }
 
 dag = DAG(
