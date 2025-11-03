@@ -49,7 +49,14 @@ spec:
                   fieldPath: metadata.name
             - name: SPARGLIM_SERVER_CUSTOM_CONFIG
               # json string for custom config, see https://spark.apache.org/docs/latest/configuration.html
-              value: "{}"
+              value: |
+                {
+                  "spark.dynamicAllocation.enabled": "true",
+                  "spark.dynamicAllocation.shuffleTracking.enabled": "true",
+                  "spark.dynamicAllocation.shuffleTracking.timeout": "180s",
+                  "spark.dynamicAllocation.executorIdleTimeout": "60s",
+                  "spark.dynamicAllocation.cachedExecutorIdleTimeout": "120s"
+                }
             - name: AWS_ACCESS_KEY_ID
               value: "admin"
             - name: AWS_SECRET_ACCESS_KEY
@@ -67,7 +74,15 @@ spec:
             - name: SPARGLIM_K8S_IMAGE_PULL_POLICY
               value: "Always"
             - name: SPARK_EXECUTOR_NUMS
-              value: "2"
+              value: "2"  # Initial/minimum executors
+            - name: SPARGLIM_DYNAMIC_ALLOCATION_ENABLED
+              value: "true"
+            - name: SPARGLIM_DYNAMIC_ALLOCATION_MIN_EXECUTORS
+              value: "0"  # Can scale down to 0 (save resources when idle)
+            - name: SPARGLIM_DYNAMIC_ALLOCATION_MAX_EXECUTORS
+              value: "7"  # Can scale up to 10 (handle large workloads)
+            - name: SPARGLIM_DYNAMIC_ALLOCATION_INITIAL_EXECUTORS
+              value: "2"  # Start with 2
             - name: SPARGLIM_EXECUTOR_REQUEST_MEMORY
               value: "2G"
             - name: SPARGLIM_EXECUTOR_LIMIT_MEMORY
