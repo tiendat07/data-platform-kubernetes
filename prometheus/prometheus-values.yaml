@@ -1,0 +1,73 @@
+alertmanager:
+  alertmanagerSpec:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 200m
+        memory: 256Mi
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: NotIn
+              values:
+              - k3s-worker-3
+
+grafana:
+  ingress:
+    enabled: true
+    ingressClassName: "nginx" 
+    hosts:
+      - grafana.homelab
+    paths:
+      - /
+  adminPassword: "password" 
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: NotIn
+            values:
+            - k3s-worker-3
+prometheus:
+  prometheusSpec:
+    replicas: 1
+
+    retention: 7d
+
+    resources:
+      requests:
+        cpu: 500m
+        memory: 750Mi 
+      limits:
+        cpu: 1
+        memory: 1.5Gi 
+
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 8Gi
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: NotIn
+              values:
+              - k3s-worker-3
+kubeEtcd:
+  enabled: false
+
+prometheus-adapter:
+  enabled: false
