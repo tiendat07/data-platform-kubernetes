@@ -8,7 +8,7 @@ spec:
     - name: lab
       protocol: TCP
       port: 8888
-      nodePort: 30888
+      #nodePort: 30888
       targetPort: 8888
     # if already deployed sparglim-server, you can comment out this port
     # - name: spark-ui
@@ -18,4 +18,4 @@ spec:
     #   targetPort: 4040
   selector:
     app: sparglim-app
-  type: NodePort
+  type: ClusterIP #NodePort

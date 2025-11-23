@@ -1,19 +1,18 @@
-# history-server-ingress.yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: history-server-ingress
-  namespace: spark
+  name: sparglim-server-ingress
+  namespace: sparglim
 spec:
   ingressClassName: nginx
   rules:
-  - host: spark-history.homelab
+  - host: spark.homelab
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: spark-history-server-svc
+            name: sparglim-server-service
             port:
-              number: 18080
+              number: 4040

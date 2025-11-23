@@ -52,10 +52,16 @@ spec:
               value: |
                 {
                   "spark.dynamicAllocation.enabled": "true",
+                  "spark.dynamicAllocation.maxExecutors": "8",
+                  "spark.dynamicAllocation.minExecutors": "0",
+                  "spark.dynamicAllocation.initialExecutors": "0",
                   "spark.dynamicAllocation.shuffleTracking.enabled": "true",
-                  "spark.dynamicAllocation.shuffleTracking.timeout": "180s",
-                  "spark.dynamicAllocation.executorIdleTimeout": "60s",
-                  "spark.dynamicAllocation.cachedExecutorIdleTimeout": "120s"
+                  "spark.dynamicAllocation.shuffleTracking.timeout": "7800s",
+                  "spark.dynamicAllocation.executorIdleTimeout": "3600s",
+                  "spark.dynamicAllocation.cachedExecutorIdleTimeout": "7200s",
+                  "spark.ui.prometheus.enabled": "true",
+                  "spark.metrics.conf.*.sink.prometheusServlet.class": "org.apache.spark.metrics.sink.PrometheusServlet",
+                  "spark.metrics.conf.*.sink.prometheusServlet.path": "/metrics/prometheus"
                 }
             - name: AWS_ACCESS_KEY_ID
               value: "admin"
@@ -73,24 +79,16 @@ spec:
               value: "tiendat2807/spark-iceberg:0.0.3"
             - name: SPARGLIM_K8S_IMAGE_PULL_POLICY
               value: "Always"
-            - name: SPARK_EXECUTOR_NUMS
-              value: "2"  # Initial/minimum executors
-            - name: SPARGLIM_DYNAMIC_ALLOCATION_ENABLED
-              value: "true"
-            - name: SPARGLIM_DYNAMIC_ALLOCATION_MIN_EXECUTORS
-              value: "0"  # Can scale down to 0 (save resources when idle)
-            - name: SPARGLIM_DYNAMIC_ALLOCATION_MAX_EXECUTORS
-              value: "7"  # Can scale up to 10 (handle large workloads)
-            - name: SPARGLIM_DYNAMIC_ALLOCATION_INITIAL_EXECUTORS
-              value: "2"  # Start with 2
+            # - name: SPARK_EXECUTOR_NUMS
+            #   value: "3"
             - name: SPARGLIM_EXECUTOR_REQUEST_MEMORY
-              value: "2G"
+              value: "5120m"
             - name: SPARGLIM_EXECUTOR_LIMIT_MEMORY
-              value: "2G"
+              value: "1024m"
             - name: SPARGLIM_K8S_EXECUTOR_REQUEST_CORES
-              value: "3"
+              value: "2"
             - name: SPARGLIM_EXECUTOR_CORES
-              value: "3"
+              value: "2"
             - name: SPARGLIM_K8S_EXECUTOR_LIMIT_CORES
               value: "3"
             - name: SPARGLIM_SQL_CATALOG_LAKEHOUSE_WAREHOUSE

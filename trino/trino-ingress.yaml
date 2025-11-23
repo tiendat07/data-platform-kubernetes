@@ -11,7 +11,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: trino.local
+  - host: trino.homelab
     http:
       paths:
       - path: /

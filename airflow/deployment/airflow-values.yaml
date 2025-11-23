@@ -22,6 +22,7 @@ data:
     sslmode: disable
 
 webserverSecretKey: 'Y3dUUkZmNEdHS1prM29zam8zbDdwejlhUG5sVlVXTkw='
+fernetKey: 'dnrnAnMTyIaXaScOFE9jus-xkfaefHKw9ELwqrH7laQ='
 
 users:
   createUserJob:
