@@ -1,4 +1,4 @@
-FROM python:3.10.12-slim-bookworm as builder
+FROM python:3.10.12-slim-bookworm AS builder
 
 RUN pip install build twine hatch
 COPY . /source
@@ -8,24 +8,30 @@ RUN python -m build
 FROM tiendat2807/spark-lakehouse:0.0.9
 
 USER root
-RUN  apt-get -y update && apt-get -y upgrade && apt-get install -y gcc python3-dev tini \
-    && rm -rf /var/lib/apt/lists/* &&  rm -rf /root/.cache && rm -rf /var/cache/apt/*
 
-# Create application user if it doesn't exist
-RUN useradd -m -s /bin/bash application || true
+RUN apt-get -y update && apt-get -y upgrade && \
+    apt-get install -y gcc python3-dev tini curl && \
+    rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+RUN pip install uv --no-cache-dir
 
-RUN chown -R application:application /app
-RUN mkdir -p /home/application/workspace && chown -R application:application /home/application
+COPY --from=builder /source/dist/*.whl /tmp/
+COPY requirements.txt /tmp/
+
+RUN uv pip install --system --no-cache /tmp/*.whl && \
+    uv pip install --system --no-cache -r /tmp/requirements.txt && \
+    rm -rf /tmp/*.whl /tmp/requirements.txt
+
+RUN useradd -m -s /bin/bash application && \
+    mkdir -p /home/application/workspace && \
+    chown -R application:application /home/application
 
 USER application
-COPY --from=builder --chown=application:application /source/dist/*.whl /tmp/
 
-RUN for f in $(echo /tmp/*.whl); do pip install --no-cache-dir $f[all]; done
+WORKDIR /home/application/workspace
 
-# As user application
-RUN pip install --no-cache-dir jupyterlab
+ENTRYPOINT ["tini", "--", "python3", "-m", "jupyterlab", \
+    "--ip=0.0.0.0", "--port=8888", "--no-browser", \
+    "--allow-root", "--NotebookApp.allow_origin='*'", \
+    "--NotebookApp.token='123'"]
 
-ENTRYPOINT ["tini","--","python3", "-m", "jupyterlab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root", "--NotebookApp.allow_origin='*'", "--NotebookApp.token='123'"]
 EXPOSE 8888
-
-# docker buildx build --platform linux/amd64,linux/arm64/v8 -t wh1isper/jupyterlab-sparglim:latest -f docker/Dockerfile.jupyterlab-sparglim --push .

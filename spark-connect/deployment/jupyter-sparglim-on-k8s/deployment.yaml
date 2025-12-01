@@ -27,8 +27,8 @@ spec:
               memory: "512Mi"
               cpu: "250m"
             limits:
-              memory: "2Gi"
-              cpu: "2000m"
+              memory: "16Gi"
+              cpu: "8000m"
           env:
             - name: SPARGLIM_SQL_MODE
               value: connect_client

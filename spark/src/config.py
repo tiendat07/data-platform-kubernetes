@@ -2,7 +2,7 @@ import os
 
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID", "admin")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY", "password")
-S3_ENDPOINT = os.getenv("S3_ENDPOINT", "minio.minio.svc.cluster.local:9000")
+S3_ENDPOINT = os.getenv("S3_ENDPOINT", "192.168.1.111:9000")
 S3_SSL_ENABLE = os.getenv("S3_SSL_ENABLE", "false")
 S3_PATH_STYLE_ACCESS = os.getenv("S3_PATH_STYLE_ACCESS", "true")
 S3_ATTEMPTS_MAXIMUM = os.getenv("S3_ATTEMPTS_MAXIMUM", "1")
@@ -14,4 +14,4 @@ S3_WAREHOUSE = os.getenv("S3_WAREHOUSE", "s3a://lakehouse/")
 S3_HTTP_ENDPOINT = (
     f"https://{S3_ENDPOINT}" if S3_SSL_ENABLE == "true" else f"http://{S3_ENDPOINT}"
 )
-ICEBERG_REST_CATALOG_URI = os.getenv("ICEBERG_REST_CATALOG_URI", "http://iceberg-rest-catalog.catalog.svc.cluster.local:8181")
+ICEBERG_REST_CATALOG_URI = os.getenv("ICEBERG_REST_CATALOG_URI", "192.168.1.111:8181")

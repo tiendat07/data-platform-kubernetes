@@ -1,0 +1,12 @@
+pandas
+polars
+pyspark
+dask
+numpy
+grpcio>=1.48.1
+grpcio-status>=1.48.1
+pyarrow
+pyiceberg
+jupyterlab
+googleapis-common-protos
+pyspark[connect]
