@@ -29,11 +29,10 @@ with DAG(
     submit = SparkKubernetesOperator(
         task_id="ingest_github_hour",
         namespace="spark-operator",
-        application_file="staging/github_events.py",
+        application_file="staging/github_events.yaml",
         kubernetes_conn_id="kubernetes_default",
         do_xcom_push=True,
         dag=dag,
-        application_args=["{{ data_interval_start.strftime('%Y-%m-%d') }}", "{{ data_interval_start.strftime('%-H') }}"],
     )
 
     sensor = SparkKubernetesSensor(
