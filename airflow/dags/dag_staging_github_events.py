@@ -19,7 +19,7 @@ with DAG(
     'github_archive_stream_backfill',
     default_args=default_args,
     description='Stream GitHub Archive to Iceberg',
-    schedule_interval='@hourly', 
+    schedule='@hourly', 
     start_date=datetime(2025, 1, 1),
     catchup=True,
     tags=['ingestion', 'spark', 'iceberg'],
