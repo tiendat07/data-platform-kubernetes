@@ -28,7 +28,7 @@ with DAG(
 
     submit = SparkKubernetesOperator(
         task_id="ingest_github_hour",
-        namespace="spark-operator",
+        namespace="spark",
         application_file="staging/github_events.yaml",
         kubernetes_conn_id="kubernetes_default",
         do_xcom_push=True,
@@ -37,7 +37,7 @@ with DAG(
 
     sensor = SparkKubernetesSensor(
         task_id="monitor_ingest_github_hour",
-        namespace="spark-operator",
+        namespace="spark",
         application_name="{{ task_instance.xcom_pull(task_ids='ingest_github_hour')['metadata']['name'] }}",
         kubernetes_conn_id="kubernetes_default",
         dag=dag,
