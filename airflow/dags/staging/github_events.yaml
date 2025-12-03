@@ -8,24 +8,61 @@ spec:
   pythonVersion: "3"
   mode: cluster
   image: "tiendat2807/spark-lakehouse:0.0.9"
-  imagePullPolicy: IfNotPresent
+  imagePullPolicy: Always
   mainApplicationFile: "local:///opt/airflow/dags/staging/github_events.py"
-  sparkVersion: "3.5.0"
+  sparkVersion: "3.5.6"
   restartPolicy:
     type: Never
   driver:
     cores: 1
-    coreLimit: "1200m"
-    memory: "512m"
+    memory: "1024m"
     labels:
-      version: 3.5.0
+      version: 3.5.6
     serviceAccount: spark
+    env:
+      - name: AWS_REGION
+        value: us-east-1
+      - name: AWS_ACCESS_KEY_ID
+        value: admin
+      - name: AWS_SECRET_ACCESS_KEY
+        value: password
+      - name: S3_ENDPOINT
+        value: 192.168.1.111:9000
+      - name: S3_SSL_ENABLE
+        value: "false"
+      - name: S3_PATH_STYLE_ACCESS
+        value: "true"
+      - name: S3_WAREHOUSE
+        value: "s3a://lakehouse/"
+      - name: ICEBERG_REST_CATALOG_URI
+        value: "http://192.168.1.111:8181"
+      - name: DATA_PATH
+        value: "s3a://raw/"
   executor:
     cores: 1
-    instances: 1
-    memory: "512m"
+    instances: 3
+    memory: "2048m"
     labels:
-      version: 3.5.0
+      version: 3.5.6
+    env:
+      - name: AWS_REGION
+        value: us-east-1
+      - name: AWS_ACCESS_KEY_ID
+        value: admin
+      - name: AWS_SECRET_ACCESS_KEY
+        value: password
+      - name: S3_ENDPOINT
+        value: 192.168.1.111:9000
+      - name: S3_SSL_ENABLE
+        value: "false"
+      - name: S3_PATH_STYLE_ACCESS
+        value: "true"
+      - name: S3_WAREHOUSE
+        value: "s3a://lakehouse/"
+      - name: ICEBERG_REST_CATALOG_URI
+        value: "http://192.168.1.111:8181"
+      - name: DATA_PATH
+        value: "s3a://raw/"
   arguments:
     - "{{ data_interval_start.strftime('%Y-%m-%d') }}"
     - "{{ data_interval_start.strftime('%-H') }}"
