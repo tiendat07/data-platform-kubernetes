@@ -9,7 +9,7 @@ spec:
   mode: cluster
   image: "tiendat2807/spark-lakehouse:0.0.9"
   imagePullPolicy: Always
-  mainApplicationFile: "local:///opt/airflow/dags/staging/github_events.py"
+  mainApplicationFile: "s3a://airflow/dags/staging/github_events.py"
   sparkVersion: "3.5.6"
   restartPolicy:
     type: Never
