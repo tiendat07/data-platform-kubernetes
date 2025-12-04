@@ -1,0 +1,53 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: spark-operator-controller
+  namespace: spark-operator
+rules:
+  - apiGroups:
+      - coordination.k8s.io
+    resources:
+      - leases
+    verbs:
+      - create
+  - apiGroups:
+      - coordination.k8s.io
+    resourceNames:
+      - spark-operator-controller-lock
+    resources:
+      - leases
+    verbs:
+      - get
+      - update
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+      - services
+      - configmaps
+      - secrets
+      - events
+      - serviceaccounts
+    verbs:
+      - create
+      - get
+      - list
+      - watch
+      - delete
+      - update
+      - patch
+  - apiGroups:
+      - sparkoperator.k8s.io
+    resources:
+      - sparkapplications
+      - scheduledsparkapplications
+      - sparkapplications/status
+      - scheduledsparkapplications/status
+    verbs:
+      - create
+      - get
+      - list
+      - watch
+      - delete
+      - update
+      - patch

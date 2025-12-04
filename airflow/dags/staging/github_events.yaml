@@ -15,6 +15,12 @@ spec:
   pythonVersion: "3"
   mode: cluster
   image: "tiendat2807/spark-lakehouse:0.0.9"
+  deps:
+    repositories:
+      - https://pypi.org/simple
+    packages:
+      - requests
+      - pyspark
   imagePullPolicy: Always
   mainApplicationFile: "s3a://airflow/dags/staging/github_events.py"
   sparkVersion: "3.5.6"
