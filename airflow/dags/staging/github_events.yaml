@@ -4,6 +4,13 @@ metadata:
   name: "github-events-{{ ds }}-{{ task_instance.try_number }}"
   namespace: spark-operator
 spec:
+  sparkConf:
+    "fs.s3a.access.key": "admin"
+    "fs.s3a.secret.key": "password"
+    "fs.s3a.endpoint": "http://192.168.1.111:9000"
+    "fs.s3a.path.style.access": "true"
+    "fs.s3a.connection.ssl.enabled": "false"
+    "fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem"
   type: Python
   pythonVersion: "3"
   mode: cluster
@@ -62,7 +69,7 @@ spec:
       - name: ICEBERG_REST_CATALOG_URI
         value: "http://192.168.1.111:8181"
       - name: DATA_PATH
-        value: "s3a://raw/"
+        value: "s3a://"
   arguments:
     - "{{ data_interval_start.strftime('%Y-%m-%d') }}"
     - "{{ data_interval_start.strftime('%-H') }}"
