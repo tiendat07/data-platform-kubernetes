@@ -31,7 +31,7 @@ with DAG(
         namespace="spark-operator",
         application_file="staging/github_events.yaml",
         kubernetes_conn_id="kubernetes_default",
-        do_xcom_push=True,
+        # do_xcom_push=True,
         dag=dag,
     )
 
