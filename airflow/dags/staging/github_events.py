@@ -108,6 +108,12 @@ if __name__ == "__main__":
         )
     """)
     
+    # Ensure schema matches (Evolution)
+    try:
+        spark.sql(f"ALTER TABLE {TARGET_TABLE} ADD COLUMN IF NOT EXISTS org_login STRING")
+    except Exception as e:
+        print(f"Schema evolution warning: {e}")
+    
     # --- D. IDEMPOTENCY STEP (DELETE) ---
     # Before we append new data, remove any data that might exist for this specific hour.
     # This handles "Retry" logic perfectly.
