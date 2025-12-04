@@ -2,6 +2,9 @@ FROM tiendat2807/spark-iceberg:0.0.3
 
 ENV  PYTHONPATH=/app:$PYTHONPATH
 
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install uv && \
+    uv pip install --system -r /tmp/requirements.txt
 
 WORKDIR /app
 COPY src/ /app/
