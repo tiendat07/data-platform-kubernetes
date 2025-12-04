@@ -11,6 +11,23 @@ spec:
     "fs.s3a.path.style.access": "true"
     "fs.s3a.connection.ssl.enabled": "false"
     "fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem"
+  sparkConf:
+    "spark.kubernetes.driverEnv.ICEBERG_REST_CATALOG_URI": "http://192.168.1.111:8181"
+    "spark.kubernetes.executorEnv.ICEBERG_REST_CATALOG_URI": "http://192.168.1.111:8181"
+    "spark.kubernetes.driverEnv.S3_ENDPOINT": "192.168.1.111:9000"
+    "spark.kubernetes.executorEnv.S3_ENDPOINT": "192.168.1.111:9000"
+    "spark.kubernetes.driverEnv.S3_WAREHOUSE": "s3a://lakehouse/"
+    "spark.kubernetes.executorEnv.S3_WAREHOUSE": "s3a://lakehouse/"
+    "spark.kubernetes.driverEnv.AWS_ACCESS_KEY_ID": "admin"
+    "spark.kubernetes.executorEnv.AWS_ACCESS_KEY_ID": "admin"
+    "spark.kubernetes.driverEnv.AWS_SECRET_ACCESS_KEY": "password"
+    "spark.kubernetes.executorEnv.AWS_SECRET_ACCESS_KEY": "password"
+    "spark.kubernetes.driverEnv.AWS_REGION": "us-east-1"
+    "spark.kubernetes.executorEnv.AWS_REGION": "us-east-1"
+    "spark.kubernetes.driverEnv.S3_SSL_ENABLE": "false"
+    "spark.kubernetes.executorEnv.S3_SSL_ENABLE": "false"
+    "spark.kubernetes.driverEnv.S3_PATH_STYLE_ACCESS": "true"
+    "spark.kubernetes.executorEnv.S3_PATH_STYLE_ACCESS": "true"
   type: Python
   pythonVersion: "3"
   mode: cluster
@@ -43,8 +60,6 @@ spec:
         value: "s3a://lakehouse/"
       - name: ICEBERG_REST_CATALOG_URI
         value: "http://192.168.1.111:8181"
-      - name: DATA_PATH
-        value: "s3a://raw/"
   executor:
     cores: 1
     instances: 3
@@ -68,8 +83,6 @@ spec:
         value: "s3a://lakehouse/"
       - name: ICEBERG_REST_CATALOG_URI
         value: "http://192.168.1.111:8181"
-      - name: DATA_PATH
-        value: "s3a://"
   arguments:
     - "{{ data_interval_start.strftime('%Y-%m-%d') }}"
     - "{{ data_interval_start.strftime('%-H') }}"
