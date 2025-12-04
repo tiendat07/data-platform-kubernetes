@@ -20,6 +20,8 @@ spec:
     "spark.kubernetes.executorEnv.S3_WAREHOUSE": "s3a://lakehouse/"
     "spark.kubernetes.executorEnv.DATA_PATH": "s3a://"
     "spark.sql.catalog.lakehouse.s3.region": "us-east-1"
+    "spark.driver.extraJavaOptions": "-Daws.region=us-east-1"
+    "spark.executor.extraJavaOptions": "-Daws.region=us-east-1"
     "spark.kubernetes.driverEnv.AWS_ACCESS_KEY_ID": "admin"
     "spark.kubernetes.executorEnv.AWS_ACCESS_KEY_ID": "admin"
     "spark.kubernetes.driverEnv.AWS_SECRET_ACCESS_KEY": "password"
