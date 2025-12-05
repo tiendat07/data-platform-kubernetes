@@ -67,7 +67,7 @@ spec:
   executor:
     cores: 1
     instances: 3
-    memory: "2048m"
+    memory: "5120m"
     labels:
       version: 3.5.6
     env:
