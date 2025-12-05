@@ -110,7 +110,9 @@ if __name__ == "__main__":
     
     # Ensure schema matches (Evolution)
     try:
-        spark.sql(f"ALTER TABLE {TARGET_TABLE} ADD COLUMN IF NOT EXISTS org_login STRING")
+        existing_cols = [field.name for field in spark.table(TARGET_TABLE).schema]
+        if "org_login" not in existing_cols:
+            spark.sql(f"ALTER TABLE {TARGET_TABLE} ADD COLUMN org_login STRING")
     except Exception as e:
         print(f"Schema evolution warning: {e}")
     

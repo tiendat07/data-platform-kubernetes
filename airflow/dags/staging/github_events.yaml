@@ -65,9 +65,9 @@ spec:
       - name: ICEBERG_REST_CATALOG_URI
         value: "http://192.168.1.111:8181"
   executor:
-    cores: 2
-    instances: 1
-    memory: "6144m"
+    cores: 1
+    instances: 3
+    memory: "2048m"
     labels:
       version: 3.5.6
     env:
