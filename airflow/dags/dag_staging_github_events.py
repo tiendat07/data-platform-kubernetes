@@ -23,7 +23,7 @@ with DAG(
     start_date=datetime(2025, 1, 1),
     catchup=True,
     tags=['ingestion', 'spark', 'iceberg'],
-    max_active_runs=1
+    max_active_runs=2
 ) as dag:
 
     submit = SparkKubernetesOperator(
