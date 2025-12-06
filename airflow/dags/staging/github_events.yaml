@@ -43,7 +43,8 @@ spec:
     type: Never
   driver:
     cores: 1
-    memory: "1024m"
+    memory: "3g"
+    memoryOverhead: "1g"
     labels:
       version: 3.5.6
     serviceAccount: spark-operator-spark
@@ -67,7 +68,8 @@ spec:
   executor:
     cores: 1
     instances: 3
-    memory: "3072m"
+    memory: "4g"
+    memoryOverhead: "1g"
     labels:
       version: 3.5.6
     env:
