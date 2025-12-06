@@ -3,6 +3,7 @@ import os
 import requests
 import gzip
 import json
+import pickle
 from pyspark.sql.functions import col, to_timestamp, to_date, hour
 from utils import get_spark
 
@@ -57,6 +58,13 @@ def flush_batch(spark, data, batch_id):
         col("payload"),
         col("org_login") # Added org_login here
     )
+
+    # Rough in-memory size estimate for this batch
+    approx_size_bytes = df_final.rdd.map(
+        lambda row: len(pickle.dumps(row.asDict(), protocol=pickle.HIGHEST_PROTOCOL))
+    ).sum()
+    approx_size_mb = approx_size_bytes / (1024 * 1024)
+    print(f"    -> Approx df_final size in driver memory: {approx_size_mb:.2f} MB")
     
     # Calculate Partition Columns
     df_final = df_final \
