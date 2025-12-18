@@ -1,11 +1,8 @@
-from datetime import timedelta, datetime
 from airflow import DAG
-from airflow.providers.cncf.kubernetes.operators.spark_kubernetes import (
-    SparkKubernetesOperator,
-)
-from airflow.providers.cncf.kubernetes.sensors.spark_kubernetes import (
-    SparkKubernetesSensor,
-)
+from airflow.operators.python import PythonOperator
+from datetime import datetime, timedelta
+from staging.github_events import run_idempotent_etl
+
 
 default_args = {
     'owner': 'data-lead',
@@ -19,19 +16,15 @@ with DAG(
     'github_archive_stream_backfill',
     default_args=default_args,
     description='Stream GitHub Archive to Iceberg',
-    schedule='@hourly', 
-    start_date=datetime(2025, 10, 1),
+    schedule_interval='@hourly', 
+    start_date=datetime(2025, 1, 1),
     catchup=True,
     tags=['ingestion', 'spark', 'iceberg'],
-    max_active_runs=2
+    max_active_runs=1
 ) as dag:
 
-    submit = SparkKubernetesOperator(
-        task_id="ingest_github_hour",
-        namespace="spark-operator",
-        application_file="staging/github_events.yaml",
-        kubernetes_conn_id="kubernetes_default",
-        dag=dag,
+    ingest_task = PythonOperator(
+        task_id='ingest_github_hour',
+        python_callable=run_idempotent_etl,
+        provide_context=True,
     )
-
-    submit
