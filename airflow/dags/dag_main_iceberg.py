@@ -41,7 +41,6 @@ submit = SparkKubernetesOperator(
     namespace="spark-operator",
     application_file="spark_jobs/main_iceberg.yaml",
     kubernetes_conn_id="kubernetes_default",
-    do_xcom_push=True,
     dag=dag,
 )
 
