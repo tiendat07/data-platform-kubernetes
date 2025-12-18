@@ -32,7 +32,7 @@ default_args = {
 dag = DAG(
     "spark_main_iceberg",
     default_args=default_args,
-    schedule_interval=None,
+    schedule=None,
     tags=["example", "spark"],
 )
 
