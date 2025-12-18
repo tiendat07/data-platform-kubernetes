@@ -26,5 +26,5 @@ with DAG(
     ingest_task = PythonOperator(
         task_id='ingest_github_hour',
         python_callable=run_idempotent_etl,
-        provide_context=True
+        # provide_context=True
     )
