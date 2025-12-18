@@ -1,0 +1,108 @@
+apiVersion: "sparkoperator.k8s.io/v1beta2"
+kind: SparkApplication
+metadata:
+  name: "main-iceberg-{{ ds }}-{{ task_instance.try_number }}"
+  namespace: spark-operator
+
+spec:
+  hadoopConf:
+    "fs.s3a.access.key": "admin"
+    "fs.s3a.secret.key": "password"
+    "fs.s3a.endpoint": "http://192.168.1.111:9000"
+    "fs.s3a.path.style.access": "true"
+    "fs.s3a.connection.ssl.enabled": "false"
+    "fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem"
+
+  sparkConf:
+    "spark.kubernetes.driverEnv.ICEBERG_REST_CATALOG_URI": "http://192.168.1.111:8181"
+    "spark.kubernetes.executorEnv.ICEBERG_REST_CATALOG_URI": "http://192.168.1.111:8181"
+
+    "spark.kubernetes.driverEnv.S3_ENDPOINT": "192.168.1.111:9000"
+    "spark.kubernetes.executorEnv.S3_ENDPOINT": "192.168.1.111:9000"
+
+    "spark.kubernetes.driverEnv.S3_WAREHOUSE": "s3a://lakehouse/"
+    "spark.kubernetes.executorEnv.S3_WAREHOUSE": "s3a://lakehouse/"
+
+    "spark.kubernetes.driverEnv.S3_SSL_ENABLE": "false"
+    "spark.kubernetes.executorEnv.S3_SSL_ENABLE": "false"
+
+    "spark.kubernetes.driverEnv.S3_PATH_STYLE_ACCESS": "true"
+    "spark.kubernetes.executorEnv.S3_PATH_STYLE_ACCESS": "true"
+
+    "spark.kubernetes.driverEnv.AWS_ACCESS_KEY_ID": "admin"
+    "spark.kubernetes.executorEnv.AWS_ACCESS_KEY_ID": "admin"
+    "spark.kubernetes.driverEnv.AWS_SECRET_ACCESS_KEY": "password"
+    "spark.kubernetes.executorEnv.AWS_SECRET_ACCESS_KEY": "password"
+    "spark.kubernetes.driverEnv.AWS_REGION": "us-east-1"
+    "spark.kubernetes.executorEnv.AWS_REGION": "us-east-1"
+
+    # optional: helps Spark talk to AWS SDK v1 (you already do this in staging)
+    "spark.driver.extraJavaOptions": "-Daws.region=us-east-1 -Daws.accessKeyId=admin -Daws.secretAccessKey=password"
+    "spark.executor.extraJavaOptions": "-Daws.region=us-east-1 -Daws.accessKeyId=admin -Daws.secretAccessKey=password"
+
+  type: Python
+  pythonVersion: "3"
+  mode: cluster
+  image: "tiendat2807/spark-lakehouse:0.0.9"
+  imagePullPolicy: Always
+
+  # This is the key part: run the python from MinIO (same pattern as staging)
+  mainApplicationFile: "s3a://airflow/dags/spark_jobs/main_iceberg.py"
+
+  sparkVersion: "3.5.6"
+  restartPolicy:
+    type: Never
+
+  driver:
+    cores: 1
+    memory: "2g"
+    memoryOverhead: "1g"
+    labels:
+      version: 3.5.6
+    serviceAccount: spark-operator-spark
+    env:
+      - name: AWS_REGION
+        value: us-east-1
+      - name: AWS_ACCESS_KEY_ID
+        value: admin
+      - name: AWS_SECRET_ACCESS_KEY
+        value: password
+      - name: S3_ENDPOINT
+        value: 192.168.1.111:9000
+      - name: S3_SSL_ENABLE
+        value: "false"
+      - name: S3_PATH_STYLE_ACCESS
+        value: "true"
+      - name: S3_WAREHOUSE
+        value: "s3a://lakehouse/"
+      - name: ICEBERG_REST_CATALOG_URI
+        value: "http://192.168.1.111:8181"
+      - name: DATA_PATH
+        value: "s3a://raw/tripdata/"
+
+  executor:
+    cores: 1
+    instances: 2
+    memory: "3g"
+    memoryOverhead: "1g"
+    labels:
+      version: 3.5.6
+    env:
+      - name: AWS_REGION
+        value: us-east-1
+      - name: AWS_ACCESS_KEY_ID
+        value: admin
+      - name: AWS_SECRET_ACCESS_KEY
+        value: password
+      - name: S3_ENDPOINT
+        value: 192.168.1.111:9000
+      - name: S3_SSL_ENABLE
+        value: "false"
+      - name: S3_PATH_STYLE_ACCESS
+        value: "true"
+      - name: S3_WAREHOUSE
+        value: "s3a://lakehouse/"
+      - name: ICEBERG_REST_CATALOG_URI
+        value: "http://192.168.1.111:8181"
+      - name: DATA_PATH
+        value: "s3a://raw/tripdata/"
