@@ -38,7 +38,7 @@ spec:
   image: "tiendat2807/spark-lakehouse:0.0.9"
   imagePullPolicy: Always
   mainApplicationFile: "s3a://airflow/dags/staging/github_events.py"
-  sparkVersion: "3.5.6"
+  sparkVersion: "3.4.4"
   restartPolicy:
     type: Never
   driver:
@@ -46,7 +46,7 @@ spec:
     memory: "2g"
     memoryOverhead: "1g"
     labels:
-      version: 3.5.6
+      version: 3.4.4
     serviceAccount: spark-operator-spark
     env:
       - name: AWS_REGION
@@ -71,7 +71,7 @@ spec:
     memory: "2g"
     memoryOverhead: "1g"
     labels:
-      version: 3.5.6
+      version: 3.4.4
     env:
       - name: AWS_REGION
         value: us-east-1

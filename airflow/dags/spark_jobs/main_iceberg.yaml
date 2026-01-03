@@ -49,7 +49,7 @@ spec:
   # This is the key part: run the python from MinIO (same pattern as staging)
   mainApplicationFile: "s3a://airflow/dags/spark_jobs/main_iceberg.py"
 
-  sparkVersion: "3.5.6"
+  sparkVersion: "3.4.4"
   restartPolicy:
     type: Never
 
@@ -58,7 +58,7 @@ spec:
     memory: "2g"
     memoryOverhead: "1g"
     labels:
-      version: 3.5.6
+      version: 3.4.4
     serviceAccount: spark-operator-spark
     env:
       - name: AWS_REGION
@@ -86,7 +86,7 @@ spec:
     memory: "3g"
     memoryOverhead: "1g"
     labels:
-      version: 3.5.6
+      version: 3.4.4
     env:
       - name: AWS_REGION
         value: us-east-1

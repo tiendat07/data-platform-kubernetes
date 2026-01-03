@@ -7,7 +7,7 @@ executor: KubernetesExecutor
 images:
   airflow:
     repository: tiendat2807/airflow
-    tag: "3.1.0"
+    tag: "3.1.0-dg"
     pullPolicy: Always
 
 data:

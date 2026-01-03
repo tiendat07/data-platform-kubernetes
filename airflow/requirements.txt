@@ -4,9 +4,9 @@ dbt-trino==1.9.3
 astronomer-cosmos==1.10.2
 apache-airflow==3.1.0
 apache-airflow-providers-trino
-apache-airflow-providers-cncf-kubernetes
+apache-airflow-providers-cncf-kubernetes==10.6
 apache-airflow-providers-fab
-pyspark==3.5.6
+pyspark==3.4.4
 grpcio-status==1.62.3
 pyarrow
 polars==1.33.1

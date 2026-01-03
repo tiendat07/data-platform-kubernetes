@@ -1,6 +1,6 @@
 pandas
 polars
-pyspark
+pyspark==3.4.4
 dask
 numpy
 grpcio>=1.48.1

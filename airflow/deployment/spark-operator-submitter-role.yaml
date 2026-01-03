@@ -4,9 +4,23 @@ metadata:
   name: spark-operator-submitter
   namespace: spark-operator
 rules:
-  - apiGroups: [""]
-    resources: ["pods", "pods/log"]
-    verbs: ["get", "list", "watch", "patch"]
   - apiGroups: ["sparkoperator.k8s.io"]
     resources: ["sparkapplications", "sparkapplications/status"]
-    verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
+    verbs: ["create","get","list","watch","delete","patch"]
+  - apiGroups: [""]
+    resources: ["pods","pods/log","events"]
+    verbs: ["get","list","watch","create","delete","patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: airflow-worker-spark-submitter
+  namespace: spark-operator
+subjects:
+  - kind: ServiceAccount
+    name: airflow-worker
+    namespace: airflow
+roleRef:
+  kind: Role
+  name: spark-operator-submitter
+  apiGroup: rbac.authorization.k8s.io
