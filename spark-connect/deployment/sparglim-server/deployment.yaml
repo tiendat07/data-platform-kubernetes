@@ -52,7 +52,7 @@ spec:
               value: |
                 {
                   "spark.dynamicAllocation.enabled": "true",
-                  "spark.dynamicAllocation.maxExecutors": "8",
+                  "spark.dynamicAllocation.maxExecutors": "4",
                   "spark.dynamicAllocation.minExecutors": "0",
                   "spark.dynamicAllocation.initialExecutors": "0",
                   "spark.dynamicAllocation.shuffleTracking.enabled": "true",
@@ -61,7 +61,10 @@ spec:
                   "spark.dynamicAllocation.cachedExecutorIdleTimeout": "7200s",
                   "spark.ui.prometheus.enabled": "true",
                   "spark.metrics.conf.*.sink.prometheusServlet.class": "org.apache.spark.metrics.sink.PrometheusServlet",
-                  "spark.metrics.conf.*.sink.prometheusServlet.path": "/metrics/prometheus"
+                  "spark.metrics.conf.*.sink.prometheusServlet.path": "/metrics/prometheus",
+                  "spark.hadoop.fs.s3.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem",
+                  "spark.hadoop.fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem",
+                  "spark.connect.grpc.arrow.maxBatchSize": "100m"
                 }
             - name: AWS_ACCESS_KEY_ID
               value: "admin"
@@ -79,10 +82,10 @@ spec:
               value: "tiendat2807/spark-iceberg:0.0.3"
             - name: SPARGLIM_K8S_IMAGE_PULL_POLICY
               value: "Always"
-            # - name: SPARK_EXECUTOR_NUMS
-            #   value: "3"
+            - name: SPARK_EXECUTOR_NUMS
+              value: "2"
             - name: SPARGLIM_EXECUTOR_REQUEST_MEMORY
-              value: "5120m"
+              value: "7168m"
             - name: SPARGLIM_EXECUTOR_LIMIT_MEMORY
               value: "1024m"
             - name: SPARGLIM_K8S_EXECUTOR_REQUEST_CORES
